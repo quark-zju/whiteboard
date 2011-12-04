@@ -41,13 +41,13 @@ class Board < ActiveRecord::Base
 
     # Return texts within query range.
     if last_modified
-      Text.where('board_id = ? AND row >= AND row < ? ' +
-                 'AND left < ? AND right >= ? AND updated_at >= ?',
+      Text.where('texts.board_id = ? AND texts.row >= ? AND texts.row < ? ' +
+                 'AND texts.left < ? AND texts.right >= ? AND texts.updated_at >= ?',
                  id.to_i, row.to_i, row.to_i + height.to_i,
                  col.to_i + width.to_i, col.to_i, last_modified)
     else
-      Text.where('board_id = ? AND row >= ? AND row < ? ' +
-                 'AND left < ? AND right >= ?',
+      Text.where('texts.board_id = ? AND texts.row >= ? AND texts.row < ? ' +
+                 'AND texts.left < ? AND texts.right >= ?',
                  id.to_i, row.to_i, row.to_i + height.to_i,
                  col.to_i + width.to_i, col.to_i)
     end
