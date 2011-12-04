@@ -70,10 +70,11 @@
 # source file, move your mouse to 'JUMP TO' at top right corner and
 # select a source file.
 
-# For full source, download it from
+# For full source, get it from
+# <https://github.com/quark-zju/whiteboard>.
 
-# Whiteboard source is authored by Wu Jun <<quark@cs.zju.edu.cn>> and 
-# licensed under [Ruby License][rl].
+# Whiteboard source is authored by Wu Jun <<quark@cs.zju.edu.cn>> 
+# and licensed under [Ruby License][rl].
 
 # [ror]: http://rubyonrails.org/
 # [ru]: http://www.ruby-lang.org/
