@@ -153,15 +153,15 @@ in length.</p>
       </td>
       <td class=code>
         <div class='highlight'><pre>    <span class="k">if</span> <span class="n">last_modified</span>
-      <span class="no">Text</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;board_id = ? AND row &gt;= AND row &lt; ?</span>
-<span class="s1">                 AND left &lt; ? AND right &gt;= ? AND updated_at &gt;= ?&#39;</span><span class="p">,</span>
-                 <span class="nb">id</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">to_i</span> <span class="o">+</span> <span class="n">height</span><span class="o">.</span><span class="n">to_i</span><span class="p">,</span>
-                 <span class="n">col</span><span class="o">.</span><span class="n">to_i</span> <span class="o">+</span> <span class="n">width</span><span class="o">.</span><span class="n">to_i</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">last_modified</span><span class="p">)</span>
+      <span class="no">Text</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;texts.board_id = ? AND texts.row &gt;= ? AND texts.row &lt; ? &#39;</span> <span class="o">+</span>
+                 <span class="s1">&#39;AND texts.left &lt; ? AND texts.right &gt;= ? AND texts.updated_at &gt;= ?&#39;</span><span class="p">,</span>
+                 <span class="nb">id</span><span class="o">.</span><span class="n">to_i</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">to_i</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">to_i</span> <span class="o">+</span> <span class="n">height</span><span class="o">.</span><span class="n">to_i</span><span class="p">,</span>
+                 <span class="n">col</span><span class="o">.</span><span class="n">to_i</span> <span class="o">+</span> <span class="n">width</span><span class="o">.</span><span class="n">to_i</span><span class="p">,</span> <span class="n">col</span><span class="o">.</span><span class="n">to_i</span><span class="p">,</span> <span class="n">last_modified</span><span class="p">)</span>
     <span class="k">else</span>
-      <span class="no">Text</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;board_id = ? AND row &gt;= ? AND row &lt; ?</span>
-<span class="s1">                 AND left &lt; ? AND right &gt;= ?&#39;</span><span class="p">,</span>
-                 <span class="nb">id</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">to_i</span> <span class="o">+</span> <span class="n">height</span><span class="o">.</span><span class="n">to_i</span><span class="p">,</span>
-                 <span class="n">col</span><span class="o">.</span><span class="n">to_i</span> <span class="o">+</span> <span class="n">width</span><span class="o">.</span><span class="n">to_i</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
+      <span class="no">Text</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;texts.board_id = ? AND texts.row &gt;= ? AND texts.row &lt; ? &#39;</span> <span class="o">+</span>
+                 <span class="s1">&#39;AND texts.left &lt; ? AND texts.right &gt;= ?&#39;</span><span class="p">,</span>
+                 <span class="nb">id</span><span class="o">.</span><span class="n">to_i</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">to_i</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">to_i</span> <span class="o">+</span> <span class="n">height</span><span class="o">.</span><span class="n">to_i</span><span class="p">,</span>
+                 <span class="n">col</span><span class="o">.</span><span class="n">to_i</span> <span class="o">+</span> <span class="n">width</span><span class="o">.</span><span class="n">to_i</span><span class="p">,</span> <span class="n">col</span><span class="o">.</span><span class="n">to_i</span><span class="p">)</span>
     <span class="k">end</span>
   <span class="k">end</span>
 <span class="k">end</span></pre></div>
