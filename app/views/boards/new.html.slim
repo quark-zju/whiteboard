@@ -1,0 +1,20 @@
+#dialog
+  h2 Create New Private Whiteboard
+  = form_for @board, html: { class: 'nice' } do |f|
+    - if @board.errors.any?
+      .error_explanation
+        h2 Invalid values
+        ul
+          - @board.errors.full_messages.each do |msg|
+            li = msg
+    .field
+      = f.label :name
+      = f.text_field :name, class: 'input-text'
+    .field
+      = f.label :password
+      = f.password_field :password, class: 'input-text'
+    .field
+      = f.label :password_confirmation
+      = f.password_field :password_confirmation, class: 'input-text'
+    .field
+      = f.submit 'Create It', class: 'blue radius medium button'

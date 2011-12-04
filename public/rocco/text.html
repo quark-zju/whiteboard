@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>text.rb</title>
+  <link rel="stylesheet" href="http://jashkenas.github.com/docco/resources/docco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div id="jump_to">
+    Jump To &hellip;
+    <div id="jump_wrapper">
+      <div id="jump_page">
+          <a class="source" href="application_controller.html">application_controller.rb</a>
+          <a class="source" href="board.html">board.rb</a>
+          <a class="source" href="boards_controller.html">boards_controller.rb</a>
+          <a class="source" href="routes.html">routes.rb</a>
+          <a class="source" href="text.html">text.rb</a>
+      </div>
+    </div>
+  </div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1>text.rb</h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-1'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-1">&#182;</a>
+        </div>
+        <p><strong>Text</strong> represents a piece of text at a specified 
+location in a board</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="k">class</span> <span class="nc">Text</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-2'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-2">&#182;</a>
+        </div>
+        <p>Disable DEBUG output.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="no">DEBUG</span> <span class="o">=</span> <span class="kp">false</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-3'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-3">&#182;</a>
+        </div>
+        <p>A Text is belongs to a board.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="n">belongs_to</span> <span class="ss">:board</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-4'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-4">&#182;</a>
+        </div>
+        <p>Class variable, a flag for skipping ActiveRecord callbacks.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="vc">@@skip_callback</span> <span class="o">=</span> <span class="kp">false</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-5'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-5">&#182;</a>
+        </div>
+        <p>A Text should always have position, board set. Additionally,
+has a length limit.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="n">validates_presence_of</span> <span class="ss">:board</span>
+  <span class="n">validates_presence_of</span> <span class="ss">:left</span><span class="p">,</span> <span class="ss">:row</span>
+  <span class="n">validates_length_of</span> <span class="ss">:content</span><span class="p">,</span> <span class="n">within</span><span class="p">:</span> <span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">1024</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-6'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-6">&#182;</a>
+        </div>
+        <p>Calculate right ( = left + content.length ) before saving
+Text object to database.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="n">before_save</span> <span class="ss">:calculate_right</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-7'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-7">&#182;</a>
+        </div>
+        <p>No <em>overlap</em> or <em>adjacent</em> texts allowed, 
+merge or clean them.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="n">after_save</span> <span class="ss">:erase_adjacent</span><span class="p">,</span> <span class="ss">:merge_with_adjacent</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-8'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-8">&#182;</a>
+        </div>
+        <p>Name aliases, <code>col</code> is <code>left</code> and <code>top</code> is <code>row</code>.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="n">alias_attribute</span> <span class="ss">:col</span><span class="p">,</span> <span class="ss">:left</span>
+  <span class="n">alias_attribute</span> <span class="ss">:top</span><span class="p">,</span> <span class="ss">:row</span>
+
+  <span class="k">def</span> <span class="nf">inspect</span>
+    <span class="nb">to_s</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">to_s</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-9'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-9">&#182;</a>
+        </div>
+        <p>Provides tidy debug output.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="s2">&quot;([</span><span class="si">#{</span><span class="nb">id</span><span class="si">}</span><span class="s2">] </span><span class="si">#{</span><span class="n">row</span><span class="si">}</span><span class="s2">,</span><span class="si">#{</span><span class="n">left</span><span class="si">}</span><span class="s2">,&#39;</span><span class="si">#{</span><span class="n">content</span><span class="si">}</span><span class="s2">&#39;)&quot;</span>
+  <span class="k">end</span>
+
+  <span class="kp">private</span>
+
+  <span class="k">def</span> <span class="nf">skip_callback?</span>
+    <span class="vc">@@skip_callback</span>
+  <span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-10'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-10">&#182;</a>
+        </div>
+        <p>A wrapper to skip callbacks.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="k">def</span> <span class="nf">skip_callback</span>
+    <span class="vc">@@skip_callback</span> <span class="o">=</span> <span class="kp">true</span>
+    <span class="n">result</span> <span class="o">=</span> <span class="k">yield</span>
+    <span class="vc">@@skip_callback</span> <span class="o">=</span> <span class="kp">false</span>
+    <span class="n">result</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">calculate_right</span>
+    <span class="nb">self</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">left</span> <span class="o">+</span> <span class="n">content</span><span class="o">.</span><span class="n">length</span> <span class="o">-</span> <span class="mi">1</span>
+  <span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-11'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-11">&#182;</a>
+        </div>
+        <p>Erase adjacent texts, for example, inserting <code></code> (3 spaces)
+at <code>D</code> of Text object:</p>
+
+<pre><code>[ABCDEFGHI]
+</code></pre>
+
+<p>Results in two Text objects:</p>
+
+<pre><code>[ABC]   [GHI]
+</code></pre>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="k">def</span> <span class="nf">erase_adjacent</span>
+    <span class="k">return</span> <span class="k">if</span> <span class="n">skip_callback?</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-12'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-12">&#182;</a>
+        </div>
+        <p>Only when content is blank (all spaces),
+should we erase adjacent texts.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="k">return</span> <span class="k">if</span> <span class="n">content</span><span class="o">.</span><span class="n">present?</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-13'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-13">&#182;</a>
+        </div>
+        <p>Locate adjacent Texts.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="n">board</span><span class="o">.</span><span class="n">texts</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;row = ? AND left &lt;= ? AND right &gt;= ?&quot;</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">right</span><span class="p">,</span> <span class="n">left</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-14'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-14">&#182;</a>
+        </div>
+        <p>Skip self.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>      <span class="k">next</span> <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="nb">self</span><span class="o">.</span><span class="n">id</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-15'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-15">&#182;</a>
+        </div>
+        <p>Save left part, ignore right part.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>      <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">left</span> <span class="o">&lt;</span> <span class="n">left</span>
+        <span class="n">skip_callback</span> <span class="k">do</span>
+          <span class="no">Text</span><span class="o">.</span><span class="n">create!</span><span class="p">(</span><span class="n">board</span><span class="p">:</span> <span class="n">board</span><span class="p">,</span>
+                       <span class="n">row</span><span class="p">:</span> <span class="n">row</span><span class="p">,</span>
+                       <span class="n">left</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">left</span><span class="p">,</span>
+                       <span class="n">content</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">content</span><span class="o">[</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="p">(</span><span class="n">left</span> <span class="o">-</span> <span class="n">t</span><span class="o">.</span><span class="n">left</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">]</span>
+                      <span class="p">)</span>
+        <span class="k">end</span>
+      <span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-16'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-16">&#182;</a>
+        </div>
+        <p>Save right part, ignore left part.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>      <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">right</span> <span class="o">&gt;</span> <span class="n">right</span>
+        <span class="n">skip_callback</span> <span class="k">do</span>
+          <span class="no">Text</span><span class="o">.</span><span class="n">create!</span><span class="p">(</span><span class="n">board</span><span class="p">:</span> <span class="n">board</span><span class="p">,</span>
+                       <span class="n">row</span><span class="p">:</span> <span class="n">row</span><span class="p">,</span>
+                       <span class="n">left</span><span class="p">:</span> <span class="n">right</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span>
+                       <span class="n">content</span><span class="p">:</span> <span class="n">t</span><span class="o">.</span><span class="n">content</span><span class="o">[-</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">right</span> <span class="o">-</span> <span class="n">right</span><span class="p">)</span><span class="o">.</span><span class="n">.</span><span class="o">-</span><span class="mi">1</span><span class="o">]</span>
+                      <span class="p">)</span>
+        <span class="k">end</span>
+      <span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-17'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-17">&#182;</a>
+        </div>
+        <p>Remove original Text for it is already splitted.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>      <span class="n">t</span><span class="o">.</span><span class="n">delete</span>
+    <span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-18'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-18">&#182;</a>
+        </div>
+        <p>Remove self for self only has spaces.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="nb">self</span><span class="o">.</span><span class="n">delete</span> <span class="k">if</span> <span class="nb">self</span><span class="o">.</span><span class="n">persisted?</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-19'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-19">&#182;</a>
+        </div>
+        <p>Return false to prevent <code>merge_with_adjacent</code>
+from being called.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre></pre></div>
+      </td>
+    </tr>
+    <tr id='section-20'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-20">&#182;</a>
+        </div>
+        <p>This does not trigger a ROLLBACK action. Good. 
+Because this method is a <code>after_save</code> callback,
+not <code>before_save</code>.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="kp">false</span>
+  <span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-21'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-21">&#182;</a>
+        </div>
+        <p>Merge adjancent/overlapped Texts into one,
+for example:</p>
+
+<pre><code>    [ABCDEFG]    [JKL]
+ +       [HELLO_WO]
+ &mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;&mdash;
+ =  [ABCDEHELLO_WOJKL]
+</code></pre>
+
+<p>This demos 2 Texts add 1 Text becomes 1 Text.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="k">def</span> <span class="nf">merge_with_adjacent</span>
+    <span class="k">return</span> <span class="k">if</span> <span class="n">skip_callback?</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-22'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-22">&#182;</a>
+        </div>
+        <p>Skip blank text.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="k">return</span> <span class="k">if</span> <span class="n">content</span><span class="o">.</span><span class="n">blank?</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-23'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-23">&#182;</a>
+        </div>
+        <p>Since self.content is frozen by Rails but we may
+modify it, just create and modify a new Text and
+drop self when necessary.</p>
+
+<p>For this to work, a <code>modified</code> flag variable is 
+needed.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="n">modified</span> <span class="o">=</span> <span class="kp">false</span>
+    <span class="n">new_text</span> <span class="o">=</span> <span class="no">Text</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">board</span><span class="p">:</span> <span class="n">board</span><span class="p">,</span> <span class="n">row</span><span class="p">:</span> <span class="n">row</span><span class="p">,</span> <span class="n">left</span><span class="p">:</span> <span class="n">left</span><span class="p">,</span> <span class="n">content</span><span class="p">:</span> <span class="n">content</span><span class="p">)</span>
+
+    <span class="n">board</span><span class="o">.</span><span class="n">texts</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s2">&quot;row = ? AND left &lt;= ? AND right &gt;= ?&quot;</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">right</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">left</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">.</span><span class="n">each</span> <span class="k">do</span> <span class="o">|</span><span class="n">t</span><span class="o">|</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-24'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-24">&#182;</a>
+        </div>
+        <p>Skip self.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>      <span class="k">next</span> <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">id</span> <span class="o">==</span> <span class="nb">self</span><span class="o">.</span><span class="n">id</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-25'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-25">&#182;</a>
+        </div>
+        <p>Merge with left Text.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>      <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">left</span> <span class="o">&lt;</span> <span class="n">left</span>
+        <span class="nb">puts</span> <span class="s2">&quot;MERGE LEFT </span><span class="si">#{</span><span class="n">new_text</span><span class="si">}</span><span class="s2"> with </span><span class="si">#{</span><span class="n">t</span><span class="si">}</span><span class="s2">: &quot;</span> <span class="k">if</span> <span class="no">DEBUG</span>
+        <span class="n">new_text</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">content</span><span class="o">[</span><span class="mi">0</span><span class="o">.</span><span class="n">.</span><span class="p">(</span><span class="n">left</span> <span class="o">-</span> <span class="n">t</span><span class="o">.</span><span class="n">left</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span><span class="o">]</span> <span class="o">+</span> <span class="n">new_text</span><span class="o">.</span><span class="n">content</span>
+        <span class="n">new_text</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">left</span>
+        <span class="n">modified</span> <span class="o">=</span> <span class="kp">true</span>
+      <span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-26'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-26">&#182;</a>
+        </div>
+        <p>Merge with right Text.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>      <span class="k">if</span> <span class="n">t</span><span class="o">.</span><span class="n">right</span> <span class="o">&gt;</span> <span class="n">right</span>
+        <span class="nb">puts</span> <span class="s2">&quot;MERGE RIGHT </span><span class="si">#{</span><span class="n">new_text</span><span class="si">}</span><span class="s2"> with </span><span class="si">#{</span><span class="n">t</span><span class="si">}</span><span class="s2">: &quot;</span> <span class="k">if</span> <span class="no">DEBUG</span>
+        <span class="n">new_text</span><span class="o">.</span><span class="n">content</span> <span class="o">=</span> <span class="n">new_text</span><span class="o">.</span><span class="n">content</span> <span class="o">+</span> <span class="n">t</span><span class="o">.</span><span class="n">content</span><span class="o">[-</span><span class="p">(</span><span class="n">t</span><span class="o">.</span><span class="n">right</span> <span class="o">-</span> <span class="n">right</span><span class="p">)</span><span class="o">.</span><span class="n">.</span><span class="o">-</span><span class="mi">1</span><span class="o">]</span>
+        <span class="n">new_text</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">t</span><span class="o">.</span><span class="n">right</span>
+        <span class="n">modified</span> <span class="o">=</span> <span class="kp">true</span>
+      <span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-27'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-27">&#182;</a>
+        </div>
+        <p>The original <code>t</code> is merged and useless, remove it.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>      <span class="n">t</span><span class="o">.</span><span class="n">delete</span>
+    <span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-28'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-28">&#182;</a>
+        </div>
+        <p>Drop self and save the new Text as said previously.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="k">if</span> <span class="n">modified</span>
+      <span class="nb">self</span><span class="o">.</span><span class="n">delete</span>
+      <span class="nb">puts</span> <span class="s2">&quot;NEW_TEXT: </span><span class="si">#{</span><span class="n">new_text</span><span class="si">}</span><span class="s2">&quot;</span> <span class="k">if</span> <span class="no">DEBUG</span>
+      <span class="n">skip_callback</span> <span class="p">{</span> <span class="n">new_text</span><span class="o">.</span><span class="n">save</span> <span class="p">}</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+<span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-Schema_Information'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Schema_Information">&#182;</a>
+        </div>
+        <h4>Schema Information</h4>
+
+<p>Table name: texts</p>
+
+<pre><code> id         :integer         not null, primary key
+ board_id   :integer
+ row        :integer
+ left       :integer
+ right      :integer
+ content    :string(255)
+ created_at :datetime
+ updated_at :datetime
+</code></pre>
+
+      </td>
+      <td class=code>
+        <div class='highlight'><pre></pre></div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>

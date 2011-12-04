@@ -1,0 +1,18 @@
+#menu.rfloat
+  = link_to_unless_current 'Public', { controller: 'boards', action: 'show', id: 'public' }, title: 'Show public whiteboard'
+  |  | 
+  = link_to_unless_current 'Create', new_board_path, title: 'Create new private whiteboard'
+  |  | 
+  = link_to_unless_current 'Login', login_boards_path, title: 'Access private whiteboard'
+  |  | 
+  = link_to_unless_current 'Help', '/rocco/routes.html', title: 'Partial source code with explaination.'
+
+h1 
+  - if params[:action] == 'show'
+    span#board_prefix Whiteboard::
+    span#board_name = @board && @board.name.present? ? @board.name : "Whiteboard"
+  - else
+    span#board_prefix Whiteboard.
+    span#board_name = params[:action]
+    
+

@@ -1,0 +1,15 @@
+.row
+  #dialog.four.columns.centered
+    h2 Assess Private Whiteboard
+    - if @login_error
+      .alert-box.error
+        = @login_error
+    = form_tag login_boards_path, class: 'nice' do
+      .field
+        = label_tag :name
+        = text_field_tag :name, @board.try(:name), class: 'input-text'
+      .field
+        = label_tag :password
+        = password_field_tag :password, nil, class: 'input-text'
+      .field
+        = submit_tag 'Let Me In', class: 'blue radius medium button'

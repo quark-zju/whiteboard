@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv="content-type" content="text/html;charset=utf-8">
+  <title>board.rb</title>
+  <link rel="stylesheet" href="http://jashkenas.github.com/docco/resources/docco.css">
+</head>
+<body>
+<div id='container'>
+  <div id="background"></div>
+  <div id="jump_to">
+    Jump To &hellip;
+    <div id="jump_wrapper">
+      <div id="jump_page">
+          <a class="source" href="application_controller.html">application_controller.rb</a>
+          <a class="source" href="board.html">board.rb</a>
+          <a class="source" href="boards_controller.html">boards_controller.rb</a>
+          <a class="source" href="routes.html">routes.rb</a>
+          <a class="source" href="text.html">text.rb</a>
+      </div>
+    </div>
+  </div>
+  <table cellspacing=0 cellpadding=0>
+  <thead>
+    <tr>
+      <th class=docs><h1>board.rb</h1></th>
+      <th class=code></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr id='section-1'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-1">&#182;</a>
+        </div>
+        <p><strong>Board</strong> represents a whiteboard, either public (no password)
+or private.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre><span class="k">class</span> <span class="nc">Board</span> <span class="o">&lt;</span> <span class="no">ActiveRecord</span><span class="o">::</span><span class="no">Base</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-2'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-2">&#182;</a>
+        </div>
+        <p>A board has many texts on it.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="n">has_many</span> <span class="ss">:texts</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-3'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-3">&#182;</a>
+        </div>
+        <p>A field for creating new private board.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="kp">attr_accessor</span> <span class="ss">:password_confirmation</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-4'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-4">&#182;</a>
+        </div>
+        <p>Board should has unique name, within 1 to 64 characters
+in length.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="n">validates_uniqueness_of</span> <span class="ss">:name</span><span class="p">,</span> <span class="n">case_sensitive</span><span class="p">:</span> <span class="kp">false</span>
+  <span class="n">validates_length_of</span> <span class="ss">:name</span><span class="p">,</span> <span class="n">within</span><span class="p">:</span> <span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">64</span>
+  <span class="n">validates_format_of</span> <span class="ss">:name</span><span class="p">,</span> <span class="n">with</span><span class="p">:</span><span class="sr"> /\A[a-z_]*\z/i</span>
+  <span class="n">validates_confirmation_of</span> <span class="ss">:password</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-5'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-5">&#182;</a>
+        </div>
+        <p>Constants for range of acceptable query requests.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="no">READ_HEIGHT_RANGE</span> <span class="o">=</span> <span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">300</span>
+  <span class="no">READ_WIDTH_RANGE</span> <span class="o">=</span> <span class="mi">1</span><span class="o">.</span><span class="n">.</span><span class="mi">400</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-6'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-6">&#182;</a>
+        </div>
+        <p>Try to login a board.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>  <span class="k">def</span> <span class="nc">self</span><span class="o">.</span><span class="nf">login</span><span class="p">(</span><span class="nb">name</span><span class="p">,</span> <span class="n">password</span><span class="p">)</span>
+    <span class="n">board</span> <span class="o">=</span> <span class="n">find_by_name</span><span class="p">(</span><span class="nb">name</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">board</span> <span class="ow">and</span> <span class="n">board</span><span class="o">.</span><span class="n">password</span> <span class="o">==</span> <span class="n">password</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-7'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-7">&#182;</a>
+        </div>
+        <p>Return logged in board.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>      <span class="n">board</span>
+    <span class="k">else</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-8'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-8">&#182;</a>
+        </div>
+        <p>Return nil means failed.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>      <span class="kp">nil</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">to_param</span>
+    <span class="nb">name</span> <span class="o">||</span> <span class="nb">id</span>
+  <span class="k">end</span>
+
+  <span class="k">def</span> <span class="nf">read</span><span class="p">(</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">height</span><span class="p">,</span> <span class="n">width</span><span class="p">,</span> <span class="n">last_modified</span> <span class="o">=</span> <span class="kp">nil</span><span class="p">)</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-9'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-9">&#182;</a>
+        </div>
+        <p>Rreject width, height outside the range limit.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="k">return</span> <span class="k">unless</span> <span class="no">READ_WIDTH_RANGE</span><span class="o">.</span><span class="n">include?</span> <span class="n">width</span><span class="o">.</span><span class="n">to_i</span> <span class="ow">and</span> <span class="no">READ_HEIGHT_RANGE</span><span class="o">.</span><span class="n">include?</span> <span class="n">height</span><span class="o">.</span><span class="n">to_i</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-10'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-10">&#182;</a>
+        </div>
+        <p>Return texts within query range.</p>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre>    <span class="k">if</span> <span class="n">last_modified</span>
+      <span class="no">Text</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;board_id = ? AND row &gt;= AND row &lt; ?</span>
+<span class="s1">                 AND left &lt; ? AND right &gt;= ? AND updated_at &gt;= ?&#39;</span><span class="p">,</span>
+                 <span class="nb">id</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">to_i</span> <span class="o">+</span> <span class="n">height</span><span class="o">.</span><span class="n">to_i</span><span class="p">,</span>
+                 <span class="n">col</span><span class="o">.</span><span class="n">to_i</span> <span class="o">+</span> <span class="n">width</span><span class="o">.</span><span class="n">to_i</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">last_modified</span><span class="p">)</span>
+    <span class="k">else</span>
+      <span class="no">Text</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="s1">&#39;board_id = ? AND row &gt;= ? AND row &lt; ?</span>
+<span class="s1">                 AND left &lt; ? AND right &gt;= ?&#39;</span><span class="p">,</span>
+                 <span class="nb">id</span><span class="p">,</span> <span class="n">row</span><span class="p">,</span> <span class="n">row</span><span class="o">.</span><span class="n">to_i</span> <span class="o">+</span> <span class="n">height</span><span class="o">.</span><span class="n">to_i</span><span class="p">,</span>
+                 <span class="n">col</span><span class="o">.</span><span class="n">to_i</span> <span class="o">+</span> <span class="n">width</span><span class="o">.</span><span class="n">to_i</span><span class="p">,</span> <span class="n">col</span><span class="p">)</span>
+    <span class="k">end</span>
+  <span class="k">end</span>
+<span class="k">end</span></pre></div>
+      </td>
+    </tr>
+    <tr id='section-Schema_Information'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-Schema_Information">&#182;</a>
+        </div>
+        <h4>Schema Information</h4>
+      </td>
+      <td class=code>
+        <div class='highlight'><pre></pre></div>
+      </td>
+    </tr>
+    <tr id='section-12'>
+      <td class=docs>
+        <div class="pilwrap">
+          <a class="pilcrow" href="#section-12">&#182;</a>
+        </div>
+        <p>Table name: boards</p>
+
+<pre><code> id         :integer         not null, primary key
+ name       :string(255)
+ password   :string(255)
+ created_at :datetime
+ updated_at :datetime
+</code></pre>
+
+      </td>
+      <td class=code>
+        <div class='highlight'><pre></pre></div>
+      </td>
+    </tr>
+  </table>
+</div>
+</body>
