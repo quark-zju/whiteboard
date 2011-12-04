@@ -73,7 +73,7 @@ class Text < ActiveRecord::Base
     return if content.present?
 
     # Locate adjacent Texts.
-    board.texts.where("row = ? AND left <= ? AND right >= ?", row, right, left).each do |t|
+    board.texts.where("row = ? AND left <= ? AND right >= ?", row.to_i, right.to_i, left.to_i).each do |t|
       # Skip self.
       next if t.id == self.id
 
@@ -139,7 +139,7 @@ class Text < ActiveRecord::Base
     modified = false
     new_text = Text.new(board: board, row: row, left: left, content: content)
 
-    board.texts.where("row = ? AND left <= ? AND right >= ?", row, right + 1, left - 1).each do |t|
+    board.texts.where("row = ? AND left <= ? AND right >= ?", row.to_i, right.to_i + 1, left.to_i - 1).each do |t|
       # Skip self.
       next if t.id == self.id
 
