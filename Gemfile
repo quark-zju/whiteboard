@@ -1,6 +1,6 @@
 source 'http://rubygems.org'
 
-gem 'rails', '3.1.3'
+gem 'rails', '3.1.10'
 
 # Bundle edge Rails instead:
 # gem 'rails',     :git => 'git://github.com/rails/rails.git'
@@ -55,5 +55,5 @@ group :development do
 end
 
 group :production do
-  gem 'therubyracer-heroku'
+  # gem 'therubyracer-heroku'
 end
